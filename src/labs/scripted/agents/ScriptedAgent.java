@@ -172,8 +172,17 @@ public class ScriptedAgent
         for(int northMoveIdx = 0; northMoveIdx < 6; ++northMoveIdx)
         {
             this.getScript().add(Action.createPrimitiveMove(this.getMyUnitId(), Direction.NORTH));
-            System.out.print("populating the script....");
         }
+        this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
+        this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
+        this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
+        this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
+        this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
+        this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
+        this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
+        this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
+        this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
+        this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
         this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
         for(int eastMoveIdx = 0; eastMoveIdx < 7; ++eastMoveIdx)
         {
