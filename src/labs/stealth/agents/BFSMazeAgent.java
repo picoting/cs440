@@ -71,7 +71,7 @@ public class BFSMazeAgent
             if (current.equals(goal)) {
                 //initialize null path, start path at goal node
                 Path path = null;
-                Vertex curr = parents.get(goal);
+                Vertex curr = goal;
 
                 //backtrack through parents map
                 while (curr != null) {
