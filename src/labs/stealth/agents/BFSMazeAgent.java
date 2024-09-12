@@ -33,9 +33,9 @@ public class BFSMazeAgent
                        Vertex goal,
                        StateView state)
     { 
-        //get size of grid
-        int rows = state.getXExtent();
-        int cols = state.getYExtent();
+        //get size of grid... nvm theres a method for this
+        //int rows = state.getXExtent();
+        //int cols = state.getYExtent();
 
         //initialize cardinally adjacent directions
         int[][] directions = { 
@@ -57,9 +57,9 @@ public class BFSMazeAgent
         Map<Vertex, Vertex> parents = new HashMap<Vertex, Vertex>();
         parents.put(src, null);
 
-        //intialize set of visited nodes, add source node
-        Set<Vertex> visited = new HashSet<Vertex>();
-        visited.add(src);
+        //intialize set of visited nodes, add source node... nvm i can just use parents to check
+        //Set<Vertex> visited = new HashSet<Vertex>();
+        //visited.add(src);
 
         System.out.println("finished initializing, starting BFS loop");
 
@@ -67,30 +67,6 @@ public class BFSMazeAgent
         while (!q.isEmpty()) {
             //poll the top vertex on the queue
             Vertex current = q.poll();
-
-            //check if we have reached target node
-            if (current.equals(goal)) {
-                //initialize null path, start path at goal node
-                Path path = null;
-                Vertex curr = parents.get(goal);
-
-                //initialize stack to hold the vertices in order
-                Stack<Vertex> pathStack = new Stack<Vertex>();
-
-                while (curr != null) {
-                    pathStack.add(curr);
-                    curr = parents.get(curr);
-                }
-
-                //use stack to create path
-                while (!pathStack.isEmpty()) {
-                    Vertex vertex = pathStack.pop();
-                    path = new Path(vertex, 1, path);
-                }
-                System.out.print("returning path:");
-                System.out.println(path);
-                return path;
-            }
 
             //check each cardinally adjacent node
             for (int[] dir: directions) {
@@ -105,12 +81,12 @@ public class BFSMazeAgent
 
                         //check that the node has not already been discovered
                         Vertex neighbor = new Vertex(newXCoor, newYCoor);
-                        if (!visited.contains(neighbor)) {
+                        if (!parents.containsKey(neighbor)) {
                             
                             //add neighbor to queue, parents map, and visited set
                             q.add(neighbor);
                             parents.put(neighbor, current);
-                            visited.add(neighbor);
+                            //visited.add(neighbor);
                             //System.out.println("discovered new neighbor");
                         }
                     }
