@@ -41,7 +41,11 @@ public class BFSMazeAgent
             {0, -1},
             {0, 1},
             {-1, 0},
-            {1, 0}
+            {1, 0},
+            {-1, 1},
+            {-1, -1},
+            {1, -1},
+            {1,1}
         };
 
         //initialize empty queue for BFS and add starting vertex
@@ -56,6 +60,8 @@ public class BFSMazeAgent
         Set<Vertex> visited = new HashSet<Vertex>();
         visited.add(src);
 
+        System.out.println("finished initializing, starting BFS loop");
+
         //BFS loop
         while (!q.isEmpty()) {
             //poll the top vertex on the queue
@@ -65,7 +71,7 @@ public class BFSMazeAgent
             if (current.equals(goal)) {
                 //initialize null path, start path at goal node
                 Path path = null;
-                Vertex curr = goal;
+                Vertex curr = parents.get(goal);
 
                 //backtrack through parents map
                 while (curr != null) {
@@ -73,7 +79,8 @@ public class BFSMazeAgent
                     path = new Path(curr, 1, path);
                     curr = parent;
                 }
-        
+                System.out.print("returning path:");
+                System.out.println(path);
                 return path;
             }
 
@@ -96,6 +103,7 @@ public class BFSMazeAgent
                             q.add(neighbor);
                             parents.put(neighbor, current);
                             visited.add(neighbor);
+                            System.out.println("discovered new neighbor");
                         }
                     }
                 }
@@ -104,6 +112,7 @@ public class BFSMazeAgent
         }
 
         //return null if we never find the goal node
+        System.out.println("goal node never reached, returning null");
         return null;
     }
 
