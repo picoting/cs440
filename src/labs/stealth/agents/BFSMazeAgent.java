@@ -50,8 +50,8 @@ public class BFSMazeAgent
         };
 
         //initialize empty queue for BFS and add starting vertex
-        Queue<Vertex> q = new LinkedList<Vertex>();
-        q.add(src);
+        Queue<Path> q = new LinkedList<Path>();
+        q.add(new Path(src));
 
         //initialize hashmaps for parents, add source
         Map<Vertex, Vertex> parents = new HashMap<Vertex, Vertex>();
@@ -66,12 +66,17 @@ public class BFSMazeAgent
         //BFS loop
         while (!q.isEmpty()) {
             //poll the top vertex on the queue
-            Vertex current = q.poll();
+            Path path = q.poll();
+            Vertex current = path.getDestination();
 
             //check each cardinally adjacent node
             for (int[] dir: directions) {
                 int newXCoor = current.getXCoordinate() + dir[0];
                 int newYCoor = current.getYCoordinate() + dir[1];
+
+                if (goal.equals(new Vertex(newXCoor, newYCoor))){
+                    return path;
+                }
 
                 //ensure the neighboring vertex is on the grid
                 if (state.inBounds(newXCoor, newYCoor)) {
@@ -84,7 +89,7 @@ public class BFSMazeAgent
                         if (!parents.containsKey(neighbor)) {
                             
                             //add neighbor to queue, parents map, and visited set
-                            q.add(neighbor);
+                            q.add(new Path(neighbor, 1f, path));
                             parents.put(neighbor, current);
                             //visited.add(neighbor);
                             //System.out.println("discovered new neighbor");
