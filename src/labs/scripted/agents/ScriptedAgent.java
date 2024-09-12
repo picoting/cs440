@@ -15,10 +15,9 @@ import edu.cwru.sepia.util.Direction;                                       // d
 
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
+
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Queue;
@@ -26,13 +25,10 @@ import java.util.LinkedList;
 
 
 // JAVA PROJECT IMPORTS
-
 import edu.cwru.sepia.action.Action;
 import edu.cwru.sepia.action.ActionType;
 import edu.cwru.sepia.action.TargetedAction;
 import edu.cwru.sepia.environment.model.state.ResourceNode.Type;
-
-
 
 
 public class ScriptedAgent
@@ -42,7 +38,6 @@ public class ScriptedAgent
 	private Integer myUnitId;               // id of the unit we control (used to lookop UnitView from state)
 	private Integer enemyUnitId;            // id of the unit our opponent controls (used to lookup UnitView from state)
     private Integer goldResourceNodeId;     // id of one gold deposit in game (used to lookup ResourceView from state)
-
     private Queue<Action> script;
 
     /**
@@ -172,6 +167,7 @@ public class ScriptedAgent
         for(int northMoveIdx = 0; northMoveIdx < 6; ++northMoveIdx)
         {
             this.getScript().add(Action.createPrimitiveMove(this.getMyUnitId(), Direction.NORTH));
+            System.out.print("populating the script....");
         }
         this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
         this.getScript().add(Action.createPrimitiveGather(this.getMyUnitId(), Direction.EAST));
@@ -215,7 +211,6 @@ public class ScriptedAgent
             actions.put(this.getMyUnitId(),
                 Action.createPrimitiveAttack(this.getMyUnitId(), this.getEnemyUnitId()));
         }
-
 
         return actions;
 	}
