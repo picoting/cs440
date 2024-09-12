@@ -13,6 +13,7 @@ import java.util.Queue;         // will need for bfs
 import java.util.LinkedList;    // will need for bfs
 import java.util.Map;
 import java.util.Set;           // will need for bfs
+import java.util.Stack;         //backtracking
 
 
 // JAVA PROJECT IMPORTS
@@ -71,13 +72,20 @@ public class BFSMazeAgent
             if (current.equals(goal)) {
                 //initialize null path, start path at goal node
                 Path path = null;
-                Vertex curr = goal;
+                Vertex curr = parents.get(goal);
 
-                //backtrack through parents map
+                //initialize stack to hold the vertices in order
+                Stack<Vertex> pathStack = new Stack<Vertex>();
+
                 while (curr != null) {
-                    Vertex parent = parents.get(curr);
-                    path = new Path(curr, 1, path);
-                    curr = parent;
+                    pathStack.add(curr);
+                    curr = parents.get(curr);
+                }
+
+                //use stack to create path
+                while (!pathStack.isEmpty()) {
+                    Vertex vertex = pathStack.pop();
+                    path = new Path(vertex, 1, path);
                 }
                 System.out.print("returning path:");
                 System.out.println(path);
@@ -103,7 +111,7 @@ public class BFSMazeAgent
                             q.add(neighbor);
                             parents.put(neighbor, current);
                             visited.add(neighbor);
-                            System.out.println("discovered new neighbor");
+                            //System.out.println("discovered new neighbor");
                         }
                     }
                 }
