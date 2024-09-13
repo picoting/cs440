@@ -33,9 +33,6 @@ public class BFSMazeAgent
                        Vertex goal,
                        StateView state)
     { 
-        //get size of grid... nvm theres a method for this
-        //int rows = state.getXExtent();
-        //int cols = state.getYExtent();
 
         //initialize cardinally adjacent directions
         int[][] directions = { 
@@ -56,10 +53,6 @@ public class BFSMazeAgent
         //initialize hashmaps for parents, add source
         Map<Vertex, Vertex> parents = new HashMap<Vertex, Vertex>();
         parents.put(src, null);
-
-        //intialize set of visited nodes, add source node... nvm i can just use parents to check
-        //Set<Vertex> visited = new HashSet<Vertex>();
-        //visited.add(src);
 
         System.out.println("finished initializing, starting BFS loop");
 
