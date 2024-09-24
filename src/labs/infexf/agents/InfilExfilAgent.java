@@ -34,11 +34,11 @@ public class InfilExfilAgent
                                StateView state)
 
     {
-        //System.out.print("source: ");
-        //System.out.println(src);
+        System.out.print("source: ");
+        System.out.println(src);
 
-        //System.out.print("destination: ");
-        //System.out.println(dst);
+        System.out.print("destination: ");
+        System.out.println(dst);
 
         Set<Integer> enemyPlayers = this.getOtherEnemyUnitIDs();
 
@@ -51,24 +51,31 @@ public class InfilExfilAgent
         float amplitude = 1000;
         float sigma = 3;
 
-        if (dst != null) {
-            for (int id : enemyPlayers) {
-                int enemyX = state.getUnit(id).getXPosition();
-                int enemyY = state.getUnit(id).getYPosition();
+        for (int id : enemyPlayers) {
+            int enemyX = state.getUnit(id).getXPosition();
+            int enemyY = state.getUnit(id).getYPosition();
 
-                Vertex enemyLoc = new Vertex(enemyX, enemyY);
+            Vertex enemyLoc = new Vertex(enemyX, enemyY);
+            float distance = 0;
 
-                float distance = DistanceMetric.euclideanDistance(enemyLoc, dst);
-
-                System.out.println(distance);
-
-                double weight = amplitude * Math.exp(-((distance - peakDistance) * (distance - peakDistance)) / (2 * sigma * sigma));
-
-                dangerWeight += weight;
+            if (dst != null) {
+                distance = DistanceMetric.euclideanDistance(enemyLoc, dst);
             }
+            else {
+                distance = DistanceMetric.euclideanDistance(enemyLoc, src);
+            }
+
+            double flatDistance = Math.sqrt(distance);
+
+            //System.out.println(distance);
+
+            double weight = amplitude * Math.exp(-((flatDistance - peakDistance) * (flatDistance - peakDistance)) / (2 * sigma * sigma));
+
+            dangerWeight += weight;
         }
-        //System.out.print("weighted edge: ");
-        //System.out.println(dangerWeight);
+        System.out.print("weighted edge: ");
+        System.out.println(dangerWeight);
+        System.out.println();
         return dangerWeight;
         //return 1f;
     }
@@ -88,7 +95,7 @@ public class InfilExfilAgent
         System.out.print("danger value: ");
         System.out.println(danger);
 
-        if (danger > 500) {
+        if (danger > 900) {
             System.out.println("changing paths....");
             return true;
         }
