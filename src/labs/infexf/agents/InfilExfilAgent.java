@@ -1,5 +1,7 @@
 package src.labs.infexf.agents;
 
+import java.util.Set;
+
 // SYSTEM IMPORTS
 import edu.bu.labs.infexf.agents.SpecOpsAgent;
 import edu.bu.labs.infexf.distance.DistanceMetric;
@@ -30,13 +32,66 @@ public class InfilExfilAgent
     public float getEdgeWeight(Vertex src,
                                Vertex dst,
                                StateView state)
+
     {
-        return 1f;
+        //System.out.print("source: ");
+        //System.out.println(src);
+
+        //System.out.print("destination: ");
+        //System.out.println(dst);
+
+        Set<Integer> enemyPlayers = this.getOtherEnemyUnitIDs();
+
+
+        //float baseWeight = 0;
+        float dangerWeight = 0; 
+
+        //trying a gaussian function...?
+        float peakDistance = 2;
+        float amplitude = 1000;
+        float sigma = 3;
+
+        if (dst != null) {
+            for (int id : enemyPlayers) {
+                int enemyX = state.getUnit(id).getXPosition();
+                int enemyY = state.getUnit(id).getYPosition();
+
+                Vertex enemyLoc = new Vertex(enemyX, enemyY);
+
+                float distance = DistanceMetric.euclideanDistance(enemyLoc, dst);
+
+                System.out.println(distance);
+
+                double weight = amplitude * Math.exp(-((distance - peakDistance) * (distance - peakDistance)) / (2 * sigma * sigma));
+
+                dangerWeight += weight;
+            }
+        }
+        //System.out.print("weighted edge: ");
+        //System.out.println(dangerWeight);
+        return dangerWeight;
+        //return 1f;
     }
 
     @Override
     public boolean shouldReplacePlan(StateView state)
     {
+        //Set<Integer> enemyPlayers = this.getOtherEnemyUnitIDs();
+        //Integer numEnemies = enemyPlayers.size();
+        System.out.print("source: ");
+        System.out.println(getEntryPointVertex());
+
+        System.out.print("destination: ");
+        System.out.println(getNextVertexToMoveTo());
+
+        double danger = getEdgeWeight(getEntryPointVertex(), getNextVertexToMoveTo(), state);
+        System.out.print("danger value: ");
+        System.out.println(danger);
+
+        if (danger > 500) {
+            System.out.println("changing paths....");
+            return true;
+        }
         return false;
     }
 
