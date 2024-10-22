@@ -59,8 +59,10 @@ public class InfilExfilAgent
         //System.out.print("destination: ");
         //System.out.println(dst);
 
-        float totalWeight = 0;
-        float finalWeight;
+        //float totalWeight = 0;
+        //float finalWeight;
+
+        float maxWeight = 0;
 
         Set<Integer> enemyPlayers = this.getOtherEnemyUnitIDs();
 
@@ -72,22 +74,29 @@ public class InfilExfilAgent
                 Vertex enemyLoc = new Vertex(enemyX, enemyY);
 
                 
-                //double weight = dangerWeight(src, dst, enemyLoc);
+                double weight = dangerWeight(src, dst, enemyLoc);
                 //System.out.println(weight);
-                totalWeight += dangerWeight(src, dst, enemyLoc);
+                //totalWeight += weight;
+
+                if (weight > maxWeight) {
+                    maxWeight = (float)weight;
+                }
             }
         }
-        finalWeight = totalWeight /= enemyPlayers.size();
+        //finalWeight = totalWeight /= enemyPlayers.size();
         //System.out.print("weighted edge: ");
         //System.out.println(dangerWeight);
-        return finalWeight;
+        return maxWeight;
         //return 1f;
     }
 
     @Override
     public boolean shouldReplacePlan(StateView state)
     {
-        Vertex myPosition = getEntryPointVertex();
+        int myX = state.getUnit(this.getMyUnitID()).getXPosition();
+        int myY = state.getUnit(this.getMyUnitID()).getYPosition();
+        Vertex myLoc = new Vertex(myX, myY);
+        //System.out.println(getEntryPointVertex());
         Set<Integer> enemyPlayers = this.getOtherEnemyUnitIDs();
         double currentRisk = 0.0;
 
@@ -101,10 +110,15 @@ public class InfilExfilAgent
 
             Vertex enemyLoc = new Vertex(enemyX, enemyY);
             //int radius = enemy.getTemplateView().getRange() + 1;
-            currentRisk += dangerWeight(myPosition, myPosition, enemyLoc);
+            double weight = dangerWeight(myLoc, myLoc, enemyLoc);
+            System.out.print("enemy risk weight: ");
+            System.out.println(weight);
+            if (weight > currentRisk) {
+                currentRisk = weight;
+            }
         }
 
-        currentRisk /= enemyPlayers.size();
+        //currentRisk /= enemyPlayers.size();
 
         System.out.println(currentRisk);
 
