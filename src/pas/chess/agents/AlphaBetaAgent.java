@@ -150,7 +150,7 @@ public class AlphaBetaAgent
 	 * TODO: please set me! This is what we will use for your submission...you get to pick your own depth param!
 	 * You can also change this is the xml file, however if you don't provide one in the xml file we use this default value
 	 */
-	private static final int DEFAULTMAXDEPTH = 3;
+	private static final int DEFAULTMAXDEPTH = 2;
 
 	private final int maxDepth;
 	private final long maxPlaytimeInMS;
